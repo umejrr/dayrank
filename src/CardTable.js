@@ -14,11 +14,13 @@ function CardTable() {
     const [newDays, setNewDays] = useState({date:'', morning: 0, night: 0, tier:'', score: 0})
     const [startDate, setStartDate] = useState(new Date());
 
+    const [morningValue, setMorningValue] = useState('Pick one')
+    const [nightValue, setNightValue] = useState('Pick one')
 
     function handleChangeMorning(e){
-        const value = e.target.value;
+        setMorningValue(e.target.value)        
         var scoreMornin = 0;
-        switch (value) {
+        switch (e.target.value) {
             case "Gold" : 
                 scoreMornin = 3
                 break;
@@ -34,10 +36,10 @@ function CardTable() {
     }
 
     function handleChangeNight(e){
-        const value = e.target.value;
+        setNightValue(e.target.value)
         var scoreNight = 0;
 
-        switch (value) {
+        switch (e.target.value) {
             case "Gold" : 
                 scoreNight = 3
                 break;
@@ -52,13 +54,8 @@ function CardTable() {
         setNewDays(prev=> ({...prev, night: scoreNight}))
     }
 
-    function handleDate(e){
-
-    }
-
     function handleSubmit(e){
         e.preventDefault();
-        const formatted = startDate.toLocaleDateString("en-GB"); // dd/mm/yyyy
 
         let score = (newDays.morning + newDays.night) / 2
         let tier = '';
@@ -78,6 +75,8 @@ function CardTable() {
 
         setDays(prevDays => [...prevDays, {...newDays, id: prevDays.length + 1, score, tier, bgColor: bgColor, date: startDate}]) 
         setNewDays({ date:'', morning: 0, night: 0, tier:'', score: 0 });
+        setMorningValue('')
+        setNightValue('')
         setModalOpen(false);
     }
         
@@ -115,11 +114,11 @@ function CardTable() {
                     <div class="fields-wrap">
                         <div>
                             <label>Date:</label>
-                            <DatePicker onSelect={handleDate} selected={startDate} onChange={(date) => setStartDate(date)}></DatePicker>
+                            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}></DatePicker>
                         </div>
                         <div>
-                            <label>Tier:</label>
-                            <select onChange={handleChangeMorning}>
+                            <label>Morning:</label>
+                            <select value={morningValue} onChange={handleChangeMorning}>
                                <option>Pick one</option>
                                <option>Bronze</option>
                                <option>Silver</option>
@@ -128,7 +127,7 @@ function CardTable() {
                         </div>
                         <div>
                             <label>Night:</label>
-                            <select onChange={handleChangeNight}>
+                            <select value={nightValue} onChange={handleChangeNight}>
                                <option>Pick one</option>
                                <option>Bronze</option>
                                <option>Silver</option>
