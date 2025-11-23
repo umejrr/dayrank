@@ -14,8 +14,8 @@ function CardTable() {
     const [newDays, setNewDays] = useState({date:'', morning: 0, night: 0, tier:'', score: 0})
     const [startDate, setStartDate] = useState(new Date());
 
-    const [morningValue, setMorningValue] = useState('Pick one')
-    const [nightValue, setNightValue] = useState('Pick one')
+    const [morningValue, setMorningValue] = useState('')
+    const [nightValue, setNightValue] = useState('')
 
     function handleChangeMorning(e){
         setMorningValue(e.target.value)        
@@ -119,7 +119,7 @@ function CardTable() {
                         <div>
                             <label>Morning:</label>
                             <select value={morningValue} onChange={handleChangeMorning}>
-                               <option>Pick one</option>
+                               <option value={''}>Pick one</option>
                                <option>Bronze</option>
                                <option>Silver</option>
                                <option>Gold</option>
@@ -128,14 +128,14 @@ function CardTable() {
                         <div>
                             <label>Night:</label>
                             <select value={nightValue} onChange={handleChangeNight}>
-                               <option>Pick one</option>
+                               <option value={''}>Pick one</option>
                                <option>Bronze</option>
                                <option>Silver</option>
                                <option>Gold</option>
                             </select>
                         </div>
                     </div>       
-                    <input type='submit' value={'Add'}></input>
+                    <input type='submit' disabled={!morningValue || !nightValue}  value={'Add'}></input>
                 </form>
                 <a onClick={()=> setModalOpen(false)} className='dialog-close'><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1.00024C1.11851 1.35758 1.71467 2.19256 2.6125 3.15144C3.68599 4.29793 5.36345 5.3637 6.35376 6.02629C7.3278 6.67801 8.35861 7.70164 9.8526 9.10495C10.2153 9.43804 10.4523 9.61582 10.7226 9.85554C10.9928 10.0953 11.2891 10.3915 11.774 10.8764" stroke="black" stroke-width="2" stroke-linecap="round"/>
