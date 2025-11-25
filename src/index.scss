@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./fonts/Brookeshappell8-eoKB.ttf') format('truetype');
+  font-weight: 400; /* Normal weight */
+  font-style: normal;
+}
+
 body {
   margin: 0;
   font-family: 'Jost', sans-serif;

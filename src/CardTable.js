@@ -91,7 +91,7 @@ function CardTable() {
             </svg>
         </a>
 
-        <div className="">
+        <div className="card-table-wrapper">
 
 
                 <ul className='card-table'>
