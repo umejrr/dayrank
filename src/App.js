@@ -1,6 +1,8 @@
 import './App.scss';
 import CardTable from './CardTable';
 import { use, useState } from 'react';
+import head from './imgs/Frame 23.png'
+import mouth from './imgs/mouth.png'
 
 function App() {
 
@@ -27,6 +29,10 @@ function App() {
           </div>
         <div className="padding-global">
           <div className="container">
+              <img src={head} alt=""/>
+              <div className="mouth">
+                <img src={mouth} alt="" />
+              </div>
             <CardTable></CardTable>
           </div>
         </div>
