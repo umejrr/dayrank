@@ -120,7 +120,7 @@ function CardTable() {
         <div className="container">
           <img className='head' src={head} alt=""/>
             <div className="mouth">
-              <img src={mouth} alt="" />
+              <img className='mouth-img' src={mouth} alt="" />
               <ul className='card-table'>
                     {days.map(day => (
                         <li className='card' key={day.id} style={{backgroundColor : day.bgColor}}>
