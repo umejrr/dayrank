@@ -1,27 +1,65 @@
+:root {
+  --cursor-default: url("./imgs/oth831.png");
+  --cursor-hover: url("./imgs/oth826.png");
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: 'MyCustomFont', sans-serif;
+  font-family: "MyCustomFont", sans-serif;
 }
 
-a{
+html.modal-open,
+body.modal-open {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* optional: prevents “rubber band” scroll on mobile */
+body.modal-open {
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+a {
   cursor: pointer;
 }
 
-.container{
+html,
+body {
+  cursor:
+    var(--cursor-default) 0 0,
+    auto; /* "0 0" is the hotspot (x y) */
+}
+
+/* Anything clickable */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+label,
+summary {
+  cursor:
+    var(--cursor-hover) 0 0,
+    pointer;
+}
+
+.container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   max-width: 1300px;
 }
 
-.padding-global{
+.padding-global {
   padding-left: 2.5%;
   padding-right: 2.5%;
 }
 
-h1{
+h1 {
   font-size: 170px;
   text-align: left;
   font-weight: 500;
@@ -29,7 +67,7 @@ h1{
   margin: 0;
 }
 
-h2{
+h2 {
   font-size: 100px;
   text-align: left;
   font-weight: 500;
@@ -37,45 +75,112 @@ h2{
   margin: 0;
 }
 
-h2{
+h2 {
   margin: 0;
 }
 
-.fields-wrap{
+.fields-wrap {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: center;
-  gap: 52px;
-  label{
+  gap: 40px;
+  label {
     color: white;
-    font-size: 96px;
+    font-size: 80px;
   }
-  .input-wrap{
-    input{
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
+  .input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    input,
+    select {
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      background-size: cover !important;
       border: none;
+      &:focus-visible {
+        outline: none;
+      }
     }
-    &.date{
-      input{
+    select {
+      &:focus-visible {
+        outline: none;
+      }
+      .bronze-option {
+        color: #4c4040;
+      }
+      .silver-option {
+        color: #d9d9d9;
+      }
+      .gold-option {
+        color: #c7bb35;
+      }
+      .default-option {
+        color: black;
+      }
+    }
+    &.date {
+      input {
         font-size: 40px;
         text-align: center;
         color: white;
         height: 67px;
         width: 221px;
-        background: url('./imgs/dateinput.png');
+        background: url("./imgs/dateinput.png");
+      }
+    }
+    &.morning {
+      select {
+        font-size: 40px;
+        text-align: center;
+        color: white;
+        width: 209.28px;
+        height: 85.99px;
+        background: url("./imgs/morninginput.png");
+      }
+    }
+    &.night {
+      select {
+        font-size: 40px;
+        text-align: center;
+        color: white;
+        width: 231.38px;
+        height: 72.28px;
+        background: url("./imgs/nightinput.png");
       }
     }
   }
 }
 
-form{
+.react-datepicker__input-container {
+  display: flex;
+  align-items: center;
+}
+
+h2.react-datepicker__current-month {
+  color: black !important;
+}
+
+.day-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  .submit-btn {
+    position: absolute;
+    bottom: 40px;
+    font-size: 80px;
+    background-image: url("./imgs/submitbtn.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    width: 400px;
+    line-height: 1;
+    padding: 10px;
+  }
 }
 
 .App {
@@ -94,7 +199,7 @@ form{
 }
 
 .App-header {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: black;
   min-height: 100vh;
   font-size: calc(10px + 2vmin);
@@ -115,35 +220,25 @@ form{
   }
 }
 
-button{
-  font-family: 'Jost', sans-serif;
-  font-weight: 700;
-  background-color: #5409DA;
-  border: 0px;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-nav{
+nav {
   padding: 10px;
 }
 
-.nav-menu{
+.nav-menu {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
 }
 
-.card-table-wrap{
+.card-table-wrap {
   width: 100%;
-  .card-table-wrapper{
+  .card-table-wrapper {
     width: 100%;
   }
 }
 
-.mouth{
+.mouth {
   position: relative;
   width: 100%;
   aspect-ratio: 1302 / 775;
@@ -152,31 +247,31 @@ nav{
   background: url("./imgs/mouth.png") center / cover no-repeat;
 }
 
-.card-table{
-position: absolute;
-inset: clamp(16px, 5vw, 80px);
-z-index: 2;
-width: auto;
-height: auto;
-padding: 0;
+.card-table {
+  position: absolute;
+  inset: clamp(16px, 5vw, 80px);
+  z-index: 2;
+  width: auto;
+  height: auto;
+  padding: 0;
 
-display: grid;
-gap: clamp(10px, 2vw, 20px);
+  display: grid;
+  gap: clamp(10px, 2vw, 20px);
 
-/* limit grid to 4 columns × 2 rows */
-grid-template-columns: repeat(4, minmax(180px, 1fr));
-grid-template-rows: repeat(2, auto);
-grid-auto-rows: 0;
-overflow: hidden;
+  /* limit grid to 4 columns × 2 rows */
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  grid-template-rows: repeat(2, auto);
+  grid-auto-rows: 0;
+  overflow: hidden;
 
-align-content: space-between;
+  align-content: space-between;
 
--webkit-mask: url("./imgs/mouth-mask.png") center / 100% 100% no-repeat;
-mask: url("./imgs/mouth-mask.png") center / 100% 100% no-repeat;
-background: url("./imgs/insides.png") center / cover no-repeat;
+  -webkit-mask: url("./imgs/mouth-mask.png") center / 100% 100% no-repeat;
+  mask: url("./imgs/mouth-mask.png") center / 100% 100% no-repeat;
+  background: url("./imgs/insides.png") center / cover no-repeat;
 }
 
-.mouth-border{
+.mouth-border {
   position: absolute;
   inset: 0;
   z-index: 3;
@@ -186,21 +281,20 @@ background: url("./imgs/insides.png") center / cover no-repeat;
   object-fit: cover;
 }
 
-.card{
+.card {
   padding: 2rem;
   background-color: white;
   color: black;
-  p{
+  p {
     margin-bottom: 10px;
     margin-top: 10px;
   }
 }
 
-.cards-wrap{
-  
+.cards-wrap {
 }
 
-.add-btn{
+.add-btn {
   padding: 5px;
   display: flex;
   justify-content: center;
@@ -208,26 +302,26 @@ background: url("./imgs/insides.png") center / cover no-repeat;
   background-color: #000;
 }
 
-dialog{
+dialog {
   margin: 0;
   width: 100%;
   height: 100%;
   background: #000000ef;
   border: 0px solid;
   position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 100;
-    width: 100%;
-    height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
 }
 
-
-.dialog-wrap{
+.dialog-wrap {
   display: flex;
-  width: 75%;
-  gap: 70px;
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
   flex-direction: column;
   padding: 2rem;
   margin: auto;
@@ -236,60 +330,63 @@ dialog{
   left: 50%;
   transform: translate(-50%, -50%);
   align-items: center;
-  gap: 100px;
-  h2{
+  gap: 60px;
+  h2 {
     color: white;
     text-align: center;
   }
-  .form-wrap{
-    background-image: url('./imgs/day-background.png');
+  .form-wrap {
+    background-image: url("./imgs/day-background.png");
     width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding: 70px;
   }
 }
 
-.dialog-close{
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.dialog-close {
+  position: relative;
+  z-index: 101;
   display: flex;
 }
 
-.topbar{
+.topbar {
   padding-top: 100px;
   padding-bottom: 30px;
   display: flex;
   justify-content: space-between;
   align-items: space-around;
-  .topbar-heading-wrap{
+  .topbar-heading-wrap {
     max-width: 300px;
   }
-  .topbar-btns-wrap{
+  .topbar-btns-wrap {
     display: flex;
     gap: 50px;
-    .checklist{
+    .checklist {
       display: block;
       width: 100%;
     }
-    .new-day{
+    .new-day {
       display: block;
       width: 100%;
     }
   }
 }
 
-.head{
+.head {
   width: 75%;
   transform: translateY(10%);
 }
 
-.welcome-wrap{
+.welcome-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   padding-top: 30px;
 }
 
-.logout{
+.logout {
   position: absolute;
   top: 40px;
   right: 40px;
@@ -299,10 +396,115 @@ dialog{
   border-bottom: 3px solid black;
 }
 
-.body{
+.body {
   width: 100%;
   transform: translateY(-43px);
-  img{
+  img {
     width: 90%;
+  }
+}
+
+.journal-wrap {
+  margin-top: 50px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 50px;
+  .journal-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+  .journal-content-wrap {
+    position: relative;
+    .journal-content-top {
+      h4 {
+        font-size: 64px;
+        font-weight: 500;
+        margin: 0;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 30px;
+      position: relative;
+      margin-bottom: 50px;
+      .medium-line {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 4px;
+        background-color: #000;
+        border-radius: 100px;
+      }
+    }
+    .journal-content-bottom {
+      display: grid;
+      grid-template-columns: repeat(3, 300px);
+      gap: 40px;
+      .journal-tier {
+        text-align: left;
+        .journal-tier-add-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 10px;
+          .add-list-btn {
+            background-image: url("./imgs/submitbtn.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            background-color: transparent;
+            border: none;
+            width: 400px;
+            line-height: 1;
+            padding: 10px;
+            font-size: 18px;
+          }
+          input {
+            width: 100%;
+            border: none;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: cover !important;
+            width: 162px;
+            height: 28px;
+            background: url("./imgs/input-bg.png");
+            font-size: 18px;
+            padding: 10px;
+            &::placeholder {
+              color: #000000;
+              opacity: 0.5;
+            }
+          }
+        }
+        h5 {
+          font-size: 45px;
+          font-weight: 500;
+          margin: 0;
+        }
+        .task-list {
+          display: flex;
+          list-style: none;
+          flex-direction: column;
+          gap: 16px;
+          padding: 0;
+          .task {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            line-height: 0.8;
+            p {
+              margin: 0;
+            }
+            .clear-task {
+              margin-left: auto;
+            }
+          }
+        }
+      }
+    }
   }
 }
