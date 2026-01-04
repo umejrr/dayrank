@@ -349,6 +349,10 @@ dialog {
   position: relative;
   z-index: 101;
   display: flex;
+  img {
+    width: 112px;
+    height: 114px;
+  }
 }
 
 .topbar {
@@ -363,6 +367,7 @@ dialog {
   .topbar-btns-wrap {
     display: flex;
     gap: 50px;
+    align-items: flex-start;
     .checklist {
       display: block;
       width: 100%;
@@ -370,6 +375,9 @@ dialog {
     .new-day {
       display: block;
       width: 100%;
+      img {
+        width: 112px;
+      }
     }
   }
 }
@@ -442,15 +450,17 @@ dialog {
     }
     .journal-content-bottom {
       display: grid;
-      grid-template-columns: repeat(3, 300px);
+      grid-template-columns: repeat(3, 1fr);
       gap: 40px;
       .journal-tier {
         text-align: left;
+        min-width: 0;
         .journal-tier-add-wrap {
           display: flex;
           align-items: center;
           justify-content: flex-start;
           gap: 10px;
+          margin-bottom: 16px;
           .add-list-btn {
             background-image: url("./imgs/submitbtn.png");
             background-repeat: no-repeat;
@@ -458,7 +468,7 @@ dialog {
             background-size: contain;
             background-color: transparent;
             border: none;
-            width: 400px;
+            width: 100%;
             line-height: 1;
             padding: 10px;
             font-size: 18px;
@@ -491,6 +501,8 @@ dialog {
           flex-direction: column;
           gap: 16px;
           padding: 0;
+          overflow-wrap: break-word;
+          word-break: break-word;
           .task {
             display: flex;
             gap: 10px;
@@ -499,9 +511,107 @@ dialog {
             p {
               margin: 0;
             }
+            .todo-checked {
+              text-decoration: line-through black 2px;
+            }
             .clear-task {
               margin-left: auto;
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+.section-landing {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    text-align: center;
+  }
+  .btns-wrap-landing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    .btn {
+      background-image: url("./imgs/landing-btn.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-color: transparent;
+      border: none;
+      width: 404px;
+      line-height: 1;
+      padding: 10px;
+      height: 169px;
+      font-size: 96px;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.section-auth {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 80px 0;
+  .padding-global {
+    width: 100%;
+    .container {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      .auth-form-wrap {
+        h1 {
+          text-align: center;
+        }
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        max-width: 1100px;
+        width: 100%;
+        .auth-form {
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+          input {
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: cover !important;
+            border: none;
+            width: 100%;
+            height: 132px;
+            background: url("./imgs/auth-input.svg");
+            font-size: 70px;
+            line-height: 1;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            &::placeholder {
+              color: #000000;
+              opacity: 0.5;
+            }
+            &:focus-visible {
+              outline: none;
+            }
+          }
+        }
+        .or-wrap {
+          width: 100%;
+          text-align: right;
+          font-size: 100px;
+          margin: 0;
+          a {
+            color: black;
           }
         }
       }

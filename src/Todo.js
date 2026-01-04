@@ -1,20 +1,11 @@
-const Todo = ({ text, id, isComplete, isDelete }) => {
+import tick from "./imgs/tick.svg";
+import untick from "./imgs/untick.svg";
+
+const Todo = ({ text, id, isComplete, isDelete, toggleTodo }) => {
   return (
-    <div className="task">
-      <svg
-        width="19"
-        height="15"
-        viewBox="0 0 19 15"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M1.6608 13.3927C1.6608 12.8427 1.40496 11.2482 1.24119 8.08311C1.1656 6.62246 0.951427 5.64517 0.72466 4.6006C0.396458 3.08879 0.497893 2.20142 0.593833 1.4023C0.632599 1.07941 0.881653 0.968605 1.07644 0.875406C1.45098 0.6962 2.87604 0.658557 4.94117 0.628106C6.24217 0.608922 9.19451 0.474004 13.1019 0.504456C15.4874 0.523046 16.5829 0.719459 16.9695 0.994443C18.1291 1.81906 18.0694 3.17585 18.3282 4.00819C18.47 4.46427 18.523 7.27661 18.491 11.2436C18.4781 12.8379 18.3292 13.2063 18.2012 13.5136C17.8774 14.2915 16.3328 14.0054 13.6233 14.1613C12.2588 14.3154 11.4835 14.3764 9.62479 14.4686C8.02191 14.5 5.07975 14.5 2.04844 14.5"
-          stroke="black"
-          stroke-linecap="round"
-        />
-      </svg>
-      <p>{text}</p>
+    <div onClick={() => toggleTodo(id)} className="task">
+      <img src={!isComplete ? tick : untick} />
+      <p className={`${isComplete ? "todo-checked" : ""}`}>{text}</p>
       <a onClick={() => isDelete(id)} className="clear-task">
         <svg
           width="12"
