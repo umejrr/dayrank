@@ -6,7 +6,7 @@ const Todo = ({ text, id, isComplete, isDelete, toggleTodo }) => {
     <div onClick={() => toggleTodo(id)} className="task">
       <img src={!isComplete ? tick : untick} />
       <p className={`${isComplete ? "todo-checked" : ""}`}>{text}</p>
-      <a onClick={() => isDelete(id)} className="clear-task">
+      <button onClick={() => isDelete(id)} className="clear-task">
         <svg
           width="12"
           height="13"
@@ -27,7 +27,7 @@ const Todo = ({ text, id, isComplete, isDelete, toggleTodo }) => {
             stroke-linecap="round"
           />
         </svg>
-      </a>
+      </button>
     </div>
   );
 };

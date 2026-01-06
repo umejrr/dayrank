@@ -1,5 +1,5 @@
 import Todo from "./Todo";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import journalBg from "./imgs/journal-bg.png";
 import sunActive from "./imgs/sun-active.svg";
@@ -14,38 +14,78 @@ const JournalModal = ({ journalOpen }) => {
   const [silverText, setSilverText] = useState("");
   const [bronzeText, setBronzeText] = useState("");
 
+  const [isMorning, setIsMorning] = useState(true);
+
   const inputRef = useRef();
 
-  const addTodo = (tier, inputText, clearInput) => {
+  const addTodo = async (tier, inputText, clearInput) => {
     if (inputText.trim() === "") {
       return;
     }
+
+    let time = "";
+
+    isMorning ? (time = "morning") : (time = "night");
+
     const newTodo = {
       id: Date.now(),
       text: inputText,
       isComplete: false,
       tier,
+      time,
     };
-    setTodoList((prev) => [...prev, newTodo]);
+
+    await fetch("/api/todos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTodo),
+    });
+
+    let res = await fetch("/api/todos");
+    let data = await res.json();
+
+    setTodoList(data);
     clearInput("");
   };
 
-  const deleteTodo = (id) => {
-    setTodoList((prevTodos) => {
-      return prevTodos.filter((todo) => todo.id !== id);
+  const deleteTodo = async (id) => {
+    await fetch(`/api/todos/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
     });
+
+    const res = await fetch("/api/todos");
+    const data = await res.json();
+
+    setTodoList(data);
   };
 
-  const toggleTodo = (id) => {
-    setTodoList((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, isComplete: !todo.isComplete };
-        }
-        return todo;
-      });
+  const toggleTodo = async (id) => {
+    const todo = todoList.find((t) => t.id === id);
+    let nextComplete = !todo.isComplete;
+
+    await fetch(`/api/todos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isComplete: nextComplete }),
     });
+
+    const res = await fetch("/api/todos");
+    const data = await res.json();
+
+    setTodoList(data);
   };
+
+  useEffect(() => {
+    const getRes = async () => {
+      let res = await fetch("/api/todos");
+      let data = await res.json();
+
+      setTodoList(data);
+    };
+
+    getRes();
+  }, []);
 
   return (
     <dialog open={journalOpen}>
@@ -56,12 +96,16 @@ const JournalModal = ({ journalOpen }) => {
           <div className="journal-content-wrap">
             <div class="journal-content-top">
               <a href="#">
-                <img src={sunInactive} alt="" />
+                <img
+                  onClick={() => setIsMorning(true)}
+                  src={isMorning ? sunActive : sunInactive}
+                  alt=""
+                />
               </a>
-              <h4>NIGHT</h4>
+              {isMorning ? <h4>Morning</h4> : <h4>Night</h4>}
 
-              <a href="#">
-                <img src={moonInactive} alt="" />
+              <a href="#" onClick={() => setIsMorning(false)}>
+                <img src={!isMorning ? moonActive : moonInactive} alt="" />
               </a>
               <div class="medium-line"></div>
             </div>
@@ -88,6 +132,9 @@ const JournalModal = ({ journalOpen }) => {
                 <div className="task-list">
                   {todoList
                     .filter((t) => t.tier === "gold")
+                    .filter((t) =>
+                      isMorning ? t.time === "morning" : t.time === "night"
+                    )
                     .map((item) => {
                       return (
                         <Todo
@@ -123,6 +170,9 @@ const JournalModal = ({ journalOpen }) => {
 
                 <div className="task-list">
                   {todoList
+                    .filter((t) =>
+                      isMorning ? t.time === "morning" : t.time === "night"
+                    )
                     .filter((t) => t.tier === "silver")
                     .map((item) => {
                       return (
@@ -159,6 +209,9 @@ const JournalModal = ({ journalOpen }) => {
 
                 <div className="task-list">
                   {todoList
+                    .filter((t) =>
+                      isMorning ? t.time === "morning" : t.time === "night"
+                    )
                     .filter((t) => t.tier === "bronze")
                     .map((item) => {
                       return (

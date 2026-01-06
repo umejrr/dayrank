@@ -484,6 +484,7 @@ dialog {
             background: url("./imgs/input-bg.png");
             font-size: 18px;
             padding: 10px;
+
             &::placeholder {
               color: #000000;
               opacity: 0.5;
@@ -571,6 +572,7 @@ dialog {
       justify-content: center;
       .auth-form-wrap {
         h1 {
+          font-size: 130px;
           text-align: center;
         }
         display: flex;
@@ -596,7 +598,27 @@ dialog {
             padding: 30px;
             display: flex;
             align-items: center;
-            &::placeholder {
+            &.btn.btn-primary {
+              background-image: url("./imgs/landing-btn.png");
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: contain;
+              background-color: transparent;
+              border: none;
+              width: 310px;
+              line-height: 1;
+              padding: 10px;
+              height: 130px;
+              font-size: 70px;
+              color: white;
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-left: auto;
+              margin-right: auto;
+            }
+            & &::placeholder {
               color: #000000;
               opacity: 0.5;
             }
@@ -610,6 +632,7 @@ dialog {
           text-align: right;
           font-size: 100px;
           margin: 0;
+          font-size: 80px;
           a {
             color: black;
           }

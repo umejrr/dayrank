@@ -8,10 +8,10 @@ const Landing = () => {
           <h1>WELCOME TO DAYRANK</h1>
           <div class="btns-wrap-landing">
             <Link to={"/login"} class="btn btn-primary">
-              sign up
+              log in
             </Link>
             <Link to={"/signup"} class="btn btn-primary">
-              log in
+              sign up
             </Link>
           </div>
         </div>
