@@ -3,11 +3,16 @@ const cors = require("cors");
 const { use } = require("react");
 const mongoose = require("mongoose");
 const app = express();
+const User = require("./models/user.model");
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri =
-  "mongodb+srv://umejrtahirovic_db_user:<db_password>@cluster0.js6rv5m.mongodb.net/?appName=Cluster0";
+require("dotenv").config();
 
 //Fake DBs
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Uspešno povezivanje sa MongoDB bazom."))
+  .catch((err) => console.error("Greška pri povezivanju:", err));
 
 let days = [];
 let user = [];
@@ -82,19 +87,16 @@ app.get("/api/todos/:id", (req, res) => {
 
 //Users
 
-mongoose
-  .connect(uri)
-  .then(() => console.log("Success!"))
-  .catch((err) => console.error("Error!", err));
+app.post("/api/user", async (req, res) => {
+  const newUser = User(req.body);
+  const savedUser = await newUser.save();
 
-app.post("/api/user", (req, res) => {
-  const newUser = req.body;
-  user.push(newUser);
-  res.status(201).send({ success: true });
+  res.status(201).send(savedUser);
 });
 
-app.get("/api/user", (req, res) => {
-  res.json(user);
+app.get("/api/user", async (req, res) => {
+  const users = await User.find();
+  res.json(users);
 });
 
 const port = 5000;

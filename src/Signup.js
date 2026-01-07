@@ -10,12 +10,23 @@ const Login = () => {
   async function handleLogin(e) {
     e.preventDefault();
 
-    const getRes = await fetch("/api/user", {
+    await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
-    console.log(getRes);
+
+    const res = await fetch("/api/user");
+
+    if (res.ok) {
+      setUser({
+        username: "",
+        email: "",
+        password: "",
+      });
+    } else {
+      return;
+    }
   }
 
   return (
