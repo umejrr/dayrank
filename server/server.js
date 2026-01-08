@@ -11,11 +11,10 @@ require("dotenv").config();
 
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("Uspešno povezivanje sa MongoDB bazom."))
-  .catch((err) => console.error("Greška pri povezivanju:", err));
+  .then(() => console.log("Success"))
+  .catch((err) => console.error("Error: ", err));
 
 let days = [];
-let user = [];
 let todos = [];
 
 //Dependencies
@@ -88,10 +87,13 @@ app.get("/api/todos/:id", (req, res) => {
 //Users
 
 app.post("/api/user", async (req, res) => {
-  const newUser = User(req.body);
-  const savedUser = await newUser.save();
-
-  res.status(201).send(savedUser);
+  const { username, email, password } = req.body;
+  try {
+    const user = User.signup(username, email, password);
+    res.status(201).json(email, user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 app.get("/api/user", async (req, res) => {
