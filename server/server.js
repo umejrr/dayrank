@@ -89,10 +89,11 @@ app.get("/api/todos/:id", (req, res) => {
 app.post("/api/user", async (req, res) => {
   const { username, email, password } = req.body;
   try {
-    const user = User.signup(username, email, password);
-    res.status(201).json(email, user);
+    const user = await User.signup(username, email, password);
+    res.status(201).json({ password, user });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    //console.log(error);
+    res.status(400).json({ errors: error });
   }
 });
 

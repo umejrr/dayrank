@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
-const { useTransition } = require("react");
+const validator = require("validator");
 
 const UserSchema = new Schema({
   username: {
@@ -23,14 +23,28 @@ const UserSchema = new Schema({
 });
 
 UserSchema.statics.signup = async function (username, email, password) {
-  const exists = await this.findOne({ email });
+  const errors = {};
 
-  if (exists) {
-    throw Error("same email ");
+  const userExist = await this.findOne({ username });
+  const emailExist = await this.findOne({ email });
+
+  if (!username) errors.username = "username must be filled bro";
+  else if (userExist) errors.username = "username taken lol";
+
+  if (!email) errors.email = "email must be filled bro";
+  else if (!validator.isEmail(email)) errors.email = "email invalid bru";
+  else if (emailExist) errors.email = "email taken lol";
+
+  if (!password) errors.password = "password must be filled bro";
+  else if (!validator.isStrongPassword(password))
+    errors.password = "password 2 weak";
+
+  if (Object.keys(errors).length > 0) {
+    throw errors;
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
+  let salt = await bcrypt.genSalt(10);
+  let hash = await bcrypt.hash(password, salt);
 
   const user = await this.create({ username, email, password: hash });
 

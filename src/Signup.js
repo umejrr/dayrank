@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -6,17 +6,23 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
 
   async function handleLogin(e) {
     e.preventDefault();
 
-    await fetch("/api/user", {
+    const res = await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
 
-    const res = await fetch("/api/user");
+    const data = await res.json();
+
+    if (!res.ok) {
+      setErrors(data.errors);
+      return;
+    }
 
     if (res.ok) {
       setUser({
@@ -24,8 +30,7 @@ const Login = () => {
         email: "",
         password: "",
       });
-    } else {
-      return;
+      setErrors({});
     }
   }
 
@@ -42,18 +47,21 @@ const Login = () => {
                 type="text"
                 placeholder="USERNAME"
               />
+              {errors.username && <p>{errors.username}</p>}
               <input
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
                 type="email"
                 placeholder="EMAIL"
               />
+              {errors.email && <p>{errors.email}</p>}
               <input
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
                 type="password"
                 placeholder="PASSWORD"
               />
+              {errors.password && <p>{errors.password}</p>}
               <input
                 type="submit"
                 className="btn btn-primary"
