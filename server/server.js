@@ -24,7 +24,7 @@ app.use(express.json());
 
 //Health
 
-app.get("/api/health", (req, res, send) => {
+app.get("/", (req, res, send) => {
   res.json({ ok: true, message: "API is running" });
 });
 

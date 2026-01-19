@@ -47,6 +47,31 @@ summary {
     pointer;
 }
 
+input[type="password"]::placeholder {
+  font-family: "MyCustomFont", sans-serif;
+}
+
+.pw-off {
+  font-family: "My Soul", cursive;
+}
+
+.show-pw {
+  position: absolute;
+  right: 50px;
+  border: none;
+  background: none;
+  top: 50%;
+  width: 40px;
+  padding: 0;
+  height: 40px;
+  transform: translateY(-50%);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .container {
   width: 100%;
   margin-left: auto;
@@ -563,7 +588,7 @@ dialog {
   height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 40px 0 80px 0;
+  padding: 40px 0 40px 0;
   .padding-global {
     width: 100%;
     .container {
@@ -584,18 +609,18 @@ dialog {
         .auth-form {
           display: flex;
           flex-direction: column;
-          gap: 30px;
+          gap: 80px;
           input {
             background-repeat: no-repeat !important;
             background-position: center !important;
             background-size: cover !important;
             border: none;
             width: 100%;
-            height: 132px;
-            background: url("./imgs/auth-input.svg");
-            font-size: 70px;
+            height: 112px;
+            background: url("./imgs/input-bg-new.svg");
+            font-size: 50px;
             line-height: 1;
-            padding: 30px;
+            padding: 40px 30px 30px 30px;
             display: flex;
             align-items: center;
             &.btn.btn-primary {
@@ -628,7 +653,10 @@ dialog {
           }
         }
         .or-wrap {
-          width: 100%;
+          position: absolute;
+          right: auto;
+          left: 20px;
+          bottom: 20px;
           text-align: right;
           font-size: 100px;
           margin: 0;
@@ -639,5 +667,17 @@ dialog {
         }
       }
     }
+  }
+}
+
+.input-wrap {
+  position: relative;
+  .auth-error {
+    position: absolute;
+    color: #ff0000;
+    text-align: left;
+    top: 120px;
+    font-size: 30px;
+    margin: 0;
   }
 }
