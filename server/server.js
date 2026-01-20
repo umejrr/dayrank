@@ -1,11 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const { use } = require("react");
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const app = express();
 const User = require("./models/user.model");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
+
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
+};
 
 //Fake DBs
 
@@ -86,11 +91,29 @@ app.get("/api/todos/:id", (req, res) => {
 
 //Users
 
-app.post("/api/user", async (req, res) => {
+app.post("/signup/user", async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const user = await User.signup(username, email, password);
-    res.status(201).json({ password, user });
+
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
+    res.redirect("/dashboard");
+  } catch (error) {
+    //console.log(error);
+    res.status(400).json({ errors: error });
+  }
+});
+
+app.post("/login/user", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.login(email, password);
+
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (error) {
     //console.log(error);
     res.status(400).json({ errors: error });
