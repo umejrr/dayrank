@@ -8,11 +8,13 @@ const User = require("./models/user.model");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
+//Token
+
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
-//Fake DBs
+//DB
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -99,7 +101,6 @@ app.post("/signup/user", async (req, res) => {
     const token = createToken(user._id);
 
     res.status(200).json({ email, token });
-    res.redirect("/dashboard");
   } catch (error) {
     //console.log(error);
     res.status(400).json({ errors: error });
@@ -107,15 +108,15 @@ app.post("/signup/user", async (req, res) => {
 });
 
 app.post("/login/user", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const user = await User.login(email, password);
+    const user = await User.login(username, password);
 
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res.status(200).json({ username, token });
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     res.status(400).json({ errors: error });
   }
 });
@@ -124,6 +125,8 @@ app.get("/api/user", async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
+
+//Listenin
 
 const port = 5000;
 

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Topbar from "./Topbar";
 import Creature from "./Creature";
+import { AuthContext, AuthProvider } from "./AuthContext";
+import { useContext } from "react";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
 function CardTable() {
   const [dayOpen, setDayOpen] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
+  const { authUser, setAuthUser } = useContext(AuthContext);
 
   return (
     <header className="App-header">
@@ -28,7 +31,7 @@ function CardTable() {
             setDayOpen={setDayOpen}
           ></Topbar>
           <div className="welcome-wrap">
-            <h1>Hello, Umi...</h1>
+            <h1>Hello, {authUser ? authUser.username : " you?"}</h1>
           </div>
         </div>
       </div>

@@ -51,11 +51,11 @@ UserSchema.statics.signup = async function (username, email, password) {
   return user;
 };
 
-UserSchema.statics.login = async function (email, password) {
+UserSchema.statics.login = async function (username, password) {
   const errors = {};
-  const user = await this.findOne({ email });
+  const user = await this.findOne({ username });
 
-  if (!email) errors.email = "email must be filled bro";
+  if (!username) errors.username = "username must be filled bro";
   if (!password) errors.password = "pw must be filled bro";
 
   if (Object.keys(errors).length > 0) {
@@ -63,7 +63,7 @@ UserSchema.statics.login = async function (email, password) {
   }
 
   if (!user) {
-    errors.email = "incorrect email";
+    errors.username = "incorrect username";
     throw errors;
   }
 

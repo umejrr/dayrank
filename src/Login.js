@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import openedEye from "./imgs/opened-eye.png";
 import closedEye from "./imgs/closed-eye.png";
+import { useNavigate } from "react-router";
+import { AuthContext } from "./AuthContext";
+import { useContext } from "react";
 
 const Login = () => {
   const [user, setUser] = useState({
-    email: "",
+    username: "",
     password: "",
   });
+  const { authUser, setAuthUser } = useContext(AuthContext);
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleVisibility = () => setVisible(!visible);
 
@@ -29,8 +35,11 @@ const Login = () => {
     }
 
     if (res.ok) {
+      navigate("/dashboard");
+      setAuthUser(data);
+      console.log(data);
       setUser({
-        email: "",
+        username: "",
         password: "",
       });
       setErrors({});
@@ -46,13 +55,17 @@ const Login = () => {
             <form className="auth-form" action="" onSubmit={handleLogin}>
               <div class="input-wrap">
                 <input
-                  id="login-email"
-                  value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  type="email"
-                  placeholder="EMAIL"
+                  id="login-username"
+                  value={user.username}
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                  type="plain"
+                  placeholder="USERNAME"
                 />
-                {errors.email && <p className="auth-error">{errors.email}</p>}
+                {errors.username && (
+                  <p className="auth-error">{errors.username}</p>
+                )}
               </div>
               <div class="input-wrap">
                 <input
