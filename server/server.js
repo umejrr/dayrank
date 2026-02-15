@@ -7,11 +7,12 @@ const app = express();
 const User = require("./models/user.model");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
+const requireAuth = require("../server/middleware/requireAuth");
 
 //Token
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1d" });
 };
 
 //DB
@@ -28,6 +29,8 @@ let todos = [];
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/days", requireAuth);
+app.use("/api/todos", requireAuth);
 
 //Health
 
@@ -100,7 +103,7 @@ app.post("/signup/user", async (req, res) => {
 
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res.status(200).json({ username, token });
   } catch (error) {
     //console.log(error);
     res.status(400).json({ errors: error });

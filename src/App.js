@@ -5,6 +5,7 @@ import Topbar from "./Topbar";
 import Creature from "./Creature";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import { useContext } from "react";
+import useLogout from "./hooks/useLogout";
 
 function App() {
   return (
@@ -17,13 +18,24 @@ function App() {
 function CardTable() {
   const [dayOpen, setDayOpen] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
-  const { authUser, setAuthUser } = useContext(AuthContext);
+
+  const { state, dispatch } = useContext(AuthContext);
+
+  const { logout } = useLogout();
+
+  const user = state.user;
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <header className="App-header">
       <div className="padding-global">
         <div className="container">
-          <a className="logout">log out</a>
+          <a onClick={handleLogout} className="logout">
+            log out
+          </a>
           <Topbar
             journalOpen={journalOpen}
             setJournalOpen={setJournalOpen}
@@ -31,7 +43,7 @@ function CardTable() {
             setDayOpen={setDayOpen}
           ></Topbar>
           <div className="welcome-wrap">
-            <h1>Hello, {authUser ? authUser.username : " you?"}</h1>
+            <h1>Hello, {user ? user.username : " you?"}</h1>
           </div>
         </div>
       </div>

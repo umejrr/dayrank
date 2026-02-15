@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import openedEye from "./imgs/opened-eye.png";
 import closedEye from "./imgs/closed-eye.png";
+import { useNavigate } from "react-router";
+import { AuthContext } from "./AuthContext";
+import { useContext } from "react";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -9,7 +12,12 @@ const Signup = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const { dispatch, state } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
+
+  const authUser = state.user;
+
+  const navigate = useNavigate();
 
   const handleVisibility = () => setVisible(!visible);
 
@@ -30,6 +38,13 @@ const Signup = () => {
     }
 
     if (res.ok) {
+      navigate("/dashboard");
+
+      dispatch({ type: "LOGIN", payload: data });
+
+      console.log(data);
+
+      localStorage.setItem("user", JSON.stringify(data));
       setUser({
         username: "",
         email: "",

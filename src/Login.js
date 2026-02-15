@@ -10,9 +10,13 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const { authUser, setAuthUser } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AuthContext);
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
+
+  const authUser = state.user;
+
+  console.log(authUser);
 
   const navigate = useNavigate();
 
@@ -36,8 +40,13 @@ const Login = () => {
 
     if (res.ok) {
       navigate("/dashboard");
-      setAuthUser(data);
+
+      dispatch({ type: "LOGIN", payload: data });
+
+      localStorage.setItem("user", JSON.stringify(data));
+
       console.log(data);
+
       setUser({
         username: "",
         password: "",
@@ -52,6 +61,7 @@ const Login = () => {
         <div class="container">
           <div class="auth-form-wrap">
             <h1>Log in</h1>
+            <h2>{authUser ? authUser.username : "lol"}</h2>
             <form className="auth-form" action="" onSubmit={handleLogin}>
               <div class="input-wrap">
                 <input
@@ -60,7 +70,7 @@ const Login = () => {
                   onChange={(e) =>
                     setUser({ ...user, username: e.target.value })
                   }
-                  type="plain"
+                  type="text"
                   placeholder="USERNAME"
                 />
                 {errors.username && (

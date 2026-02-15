@@ -23,6 +23,9 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
   const [morningValue, setMorningValue] = useState("");
   const [nightValue, setNightValue] = useState("");
 
+  const stored = JSON.parse(localStorage.getItem("user"));
+  const token = stored?.token;
+
   function handleChangeMorning(e) {
     setMorningValue(e.target.value);
     var scoreMornin = 0;
@@ -88,7 +91,10 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
 
     await fetch("/api/days", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(dayToSend),
     });
 
@@ -101,15 +107,26 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
   }
 
   useEffect(() => {
-    const getRes = async () => {
-      let res = await fetch("/api/days");
-      let data = await res.json();
+    if (!token) return;
 
-      setDays(data);
+    const getRes = async () => {
+      const res = await fetch("/api/days", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        console.log("GET /api/days failed:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      setDays(Array.isArray(data) ? data : []);
     };
 
     getRes();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const cls = "modal-open";

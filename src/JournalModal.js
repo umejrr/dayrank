@@ -16,6 +16,9 @@ const JournalModal = ({ journalOpen }) => {
 
   const [isMorning, setIsMorning] = useState(true);
 
+  const stored = JSON.parse(localStorage.getItem("user"));
+  const token = stored?.token;
+
   const inputRef = useRef();
 
   const addTodo = async (tier, inputText, clearInput) => {
@@ -37,27 +40,48 @@ const JournalModal = ({ journalOpen }) => {
 
     await fetch("/api/todos", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(newTodo),
     });
 
-    let res = await fetch("/api/todos");
+    let res = await fetch("/api/todos", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      return;
+    }
     let data = await res.json();
 
-    setTodoList(data);
+    if (res.ok) {
+      setTodoList(data);
+    }
+
     clearInput("");
   };
 
   const deleteTodo = async (id) => {
     await fetch(`/api/todos/${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    const res = await fetch("/api/todos");
+    const res = await fetch("/api/todos", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      return;
+    }
     const data = await res.json();
 
-    setTodoList(data);
+    if (res.ok) {
+      setTodoList(data);
+    }
   };
 
   const toggleTodo = async (id) => {
@@ -66,26 +90,45 @@ const JournalModal = ({ journalOpen }) => {
 
     await fetch(`/api/todos/${id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ isComplete: nextComplete }),
     });
 
-    const res = await fetch("/api/todos");
+    const res = await fetch("/api/todos", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      return;
+    }
     const data = await res.json();
 
     setTodoList(data);
   };
 
   useEffect(() => {
-    const getRes = async () => {
-      let res = await fetch("/api/todos");
-      let data = await res.json();
+    if (!token) return;
 
-      setTodoList(data);
+    const getRes = async () => {
+      const res = await fetch("/api/todos", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        console.log("GET /api/todos failed:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      setTodoList(Array.isArray(data) ? data : []);
     };
 
     getRes();
-  }, []);
+  }, [token]);
 
   return (
     <dialog open={journalOpen}>
@@ -133,7 +176,7 @@ const JournalModal = ({ journalOpen }) => {
                   {todoList
                     .filter((t) => t.tier === "gold")
                     .filter((t) =>
-                      isMorning ? t.time === "morning" : t.time === "night"
+                      isMorning ? t.time === "morning" : t.time === "night",
                     )
                     .map((item) => {
                       return (
@@ -171,7 +214,7 @@ const JournalModal = ({ journalOpen }) => {
                 <div className="task-list">
                   {todoList
                     .filter((t) =>
-                      isMorning ? t.time === "morning" : t.time === "night"
+                      isMorning ? t.time === "morning" : t.time === "night",
                     )
                     .filter((t) => t.tier === "silver")
                     .map((item) => {
@@ -210,7 +253,7 @@ const JournalModal = ({ journalOpen }) => {
                 <div className="task-list">
                   {todoList
                     .filter((t) =>
-                      isMorning ? t.time === "morning" : t.time === "night"
+                      isMorning ? t.time === "morning" : t.time === "night",
                     )
                     .filter((t) => t.tier === "bronze")
                     .map((item) => {
