@@ -61,7 +61,6 @@ const Login = () => {
         <div class="container">
           <div class="auth-form-wrap">
             <h1>Log in</h1>
-            <h2>{authUser ? authUser.username : "lol"}</h2>
             <form className="auth-form" action="" onSubmit={handleLogin}>
               <div class="input-wrap">
                 <input

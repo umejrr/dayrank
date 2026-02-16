@@ -1,24 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router";
 import Landing from "./Landing";
 import Login from "./Login";
 import Signup from "./Signup";
 import { AuthContext, AuthProvider } from "./AuthContext";
+import { useAuthContext } from "./hooks/useAuthContext";
+
+function AppRoutes() {
+  const { state, auth } = useAuthContext();
+  const user = state?.user;
+  console.log("user:", user, "authReady:", auth);
+
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route
+        path="/login"
+        element={!user ? <Login /> : <Navigate to="/dashboard" />}
+      />
+      <Route
+        path="/signup"
+        element={!user ? <Signup /> : <Navigate to="/dashboard" />}
+      />
+      <Route
+        path="/dashboard"
+        element={user ? <App /> : <Navigate to="/login" />}
+      />
+    </Routes>
+  );
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <AuthProvider>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<App />} />
-      </Routes>
+      <AppRoutes></AppRoutes>
     </BrowserRouter>
   </AuthProvider>,
 );

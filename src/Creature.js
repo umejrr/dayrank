@@ -80,14 +80,15 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
     }
 
     const dayToSend = {
-      id: Date.now(),
       score,
       tier,
       bgColor,
-      date: startDate,
+      date: Date.now(),
       morning: newDays.morning,
       night: newDays.night,
     };
+
+    console.log(dayToSend);
 
     await fetch("/api/days", {
       method: "POST",
@@ -162,6 +163,28 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
 
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [dayOpen, journalOpen]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    const getRes = async () => {
+      const res = await fetch("/api/days", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        console.log("GET /api/days flopped:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      setDays(Array.isArray(data) ? data : []);
+    };
+
+    getRes();
+  }, [token]);
 
   return (
     <div className="card-table-wrap">

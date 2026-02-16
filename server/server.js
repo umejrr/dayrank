@@ -8,6 +8,7 @@ const User = require("./models/user.model");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 const requireAuth = require("../server/middleware/requireAuth");
+const Day = require("./models/dayModel");
 
 //Token
 
@@ -40,13 +41,21 @@ app.get("/", (req, res, send) => {
 
 //Days
 
-app.post("/api/days", (req, res) => {
+app.post("/api/days", async (req, res) => {
+  const user_id = req.userId;
   const newDay = req.body;
-  days.push(newDay);
-  res.status(201).send({ success: true });
+  console.log(newDay);
+
+  const day = await Day.create({ ...req.body, user_id });
+
+  res.status(201).json(day);
 });
 
-app.get("/api/days", (req, res) => {
+app.get("/api/days", async (req, res) => {
+  const user_id = req.userId;
+
+  const days = await Day.find({ user_id }).sort({ createdAt: -1 });
+
   res.json(days);
 });
 

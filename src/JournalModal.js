@@ -17,6 +17,7 @@ const JournalModal = ({ journalOpen }) => {
   const [isMorning, setIsMorning] = useState(true);
 
   const stored = JSON.parse(localStorage.getItem("user"));
+
   const token = stored?.token;
 
   const inputRef = useRef();
