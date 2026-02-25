@@ -56,13 +56,13 @@ const Login = () => {
   }
 
   return (
-    <div class="section-auth">
-      <div class="padding-global">
-        <div class="container">
-          <div class="auth-form-wrap">
+    <div className="section-auth">
+      <div className="padding-global">
+        <div className="container">
+          <div className="auth-form-wrap">
             <h1>Log in</h1>
             <form className="auth-form" action="" onSubmit={handleLogin}>
-              <div class="input-wrap">
+              <div className="input-wrap">
                 <input
                   id="login-username"
                   value={user.username}
@@ -76,7 +76,7 @@ const Login = () => {
                   <p className="auth-error">{errors.username}</p>
                 )}
               </div>
-              <div class="input-wrap">
+              <div className="input-wrap">
                 <input
                   id="login-pw"
                   value={user.password}

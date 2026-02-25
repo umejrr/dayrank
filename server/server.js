@@ -9,6 +9,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 const requireAuth = require("../server/middleware/requireAuth");
 const Day = require("./models/dayModel");
+const Todo = require("./models/todoModel");
 
 //Token
 
@@ -44,7 +45,7 @@ app.get("/", (req, res, send) => {
 app.post("/api/days", async (req, res) => {
   const user_id = req.userId;
   const newDay = req.body;
-  console.log(newDay);
+  console.log(user_id);
 
   const day = await Day.create({ ...req.body, user_id });
 
@@ -61,41 +62,55 @@ app.get("/api/days", async (req, res) => {
 
 //Todos
 
-app.post("/api/todos", (req, res) => {
+app.post("/api/todos", async (req, res) => {
   const newTodo = req.body;
-  todos.push(newTodo);
-  res.status(201).send({ success: true });
+  const user_id = req.userId;
+
+  const todos = await Todo.create({ ...req.body, user_id });
+
+  console.log(todos.isComplete);
+
+  res.status(201).send(todos);
 });
 
-app.get("/api/todos", (req, res) => {
+app.get("/api/todos", async (req, res) => {
+  const user_id = req.userId;
+
+  const todos = await Todo.find({ user_id }).sort({ createdAt: -1 });
+
+  console.log(todos);
+
   res.json(todos);
 });
 
-app.delete("/api/todos/:id", (req, res) => {
+app.delete("/api/todos/:id", async (req, res) => {
   const id = req.params.id;
-  const index = todos.findIndex((todo) => todo.id === Number(id));
+  const user_id = req.userId;
+  const result = await Todo.deleteOne({ _id: id, user_id });
 
-  if (index === -1) {
+  if (!result) {
     return res.status(400).json({ error: "Doesnt exist!" });
   }
-
-  todos.splice(index, 1);
 
   res.status(200).send("Ok!");
 });
 
-app.patch("/api/todos/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const todo = todos.find((t) => t.id === id);
-  const update = req.body;
+app.patch("/api/todos/:id", async (req, res) => {
+  const id = req.params.id;
+  const user_id = req.userId;
+  console.log(user_id);
 
-  for (let key in update) {
-    if (key in todo) {
-      todo[key] = update[key];
-    }
+  const update = await Todo.findOneAndUpdate(
+    { _id: id, user_id },
+    { ...req.body },
+    { new: true },
+  );
+
+  if (!update) {
+    return res.status(400).json({ error: "Doesnt exist!" });
   }
 
-  res.send(todo);
+  res.json(update);
 });
 
 app.get("/api/todos/:id", (req, res) => {

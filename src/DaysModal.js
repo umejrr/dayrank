@@ -14,7 +14,7 @@ const DaysModal = ({
     <dialog open={dayOpen}>
       <div className="dialog-wrap">
         <h2>Add new card</h2>
-        <div class="form-wrap">
+        <div className="form-wrap">
           <form className="day-form" onSubmit={handleSubmit}>
             <div className="fields-wrap">
               <div className="input-wrap date">

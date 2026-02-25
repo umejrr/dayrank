@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useEffect } from "react";
 import head from "./imgs/Frame 23.png";
 import mouthBorder from "./imgs/Vector 7.png";
@@ -7,9 +7,68 @@ import body from "./imgs/body.png";
 import "react-datepicker/dist/react-datepicker.css";
 import JournalModal from "./JournalModal";
 import DaysModal from "./DaysModal";
+import eye from "./imgs/eye.png";
+import goldTooth from "./imgs/gold-tooth.png";
+import silverTooth from "./imgs/silver-tooth.png";
+import bronzeTooth from "./imgs/bronze-tooth.png";
 
 const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
   const [days, setDays] = useState([]);
+
+  const eyeLeft = useRef(null);
+  const eyeRight = useRef(null);
+
+  const mouse = useRef({ x: 0, y: 0 });
+
+  function applyEyeTransform(el, mouseX, mouseY) {
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const dx = mouseX - cx;
+    const dy = mouseY - cy;
+
+    const rot = Math.atan2(dy, dx) * (180 / Math.PI);
+
+    el.style.transform = `rotate(${rot}deg)`;
+  }
+
+  useEffect(() => {
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const { x, y } = mouse.current;
+      applyEyeTransform(eyeLeft.current, x, y);
+      applyEyeTransform(eyeRight.current, x, y);
+    };
+
+    const requestUpdate = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    const onMove = (e) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      requestUpdate();
+    };
+
+    const onScroll = () => {
+      requestUpdate();
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const [newDays, setNewDays] = useState({
     date: "",
@@ -67,22 +126,22 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
 
     let score = (newDays.morning + newDays.night) / 2;
     let tier = "";
-    let bgColor = "";
+    let bgImage = "";
     if (score === 3) {
       tier = "Gold";
-      bgColor = "yellow";
+      bgImage = goldTooth;
     } else if (score < 3 && score >= 2) {
       tier = "Silver";
-      bgColor = "gray";
+      bgImage = silverTooth;
     } else {
       tier = "Bronze";
-      bgColor = "brown";
+      bgImage = bronzeTooth;
     }
 
     const dayToSend = {
       score,
       tier,
-      bgColor,
+      bgImage,
       date: Date.now(),
       morning: newDays.morning,
       night: newDays.night,
@@ -190,19 +249,25 @@ const Creature = ({ dayOpen, setDayOpen, journalOpen, setJournalOpen }) => {
     <div className="card-table-wrap">
       <div className="padding-global">
         <div className="container">
-          <img className="head" src={head} alt="" />
+          <div className="head-wrap">
+            <div className="eye-wrap">
+              <img className="eye left" ref={eyeLeft} src={eye} alt="" />
+              <img className="eye right" ref={eyeRight} src={eye} alt="" />
+            </div>
+            <img className="head" src={head} alt="" />
+          </div>
           <div className="mouth">
             <ul className="card-table">
               <img className="mouth-border" src={mouthBorder} alt="" />
               {days.slice(-8).map((day) => (
                 <li
                   className="card"
-                  key={day.id}
-                  style={{ backgroundColor: day.bgColor }}
+                  key={day._id}
+                  style={{ backgroundImage: `url(${day.bgImage})` }}
                 >
-                  <p>{new Date(day.date).toLocaleDateString("en-GB")}</p>
-                  <p>{day.tier}</p>
-                  <p>{day.score}</p>
+                  <p>Date: {new Date(day.date).toLocaleDateString("en-GB")}</p>
+                  <p>Tier: {day.tier}</p>
+                  <p>Score: {day.score}</p>
                 </li>
               ))}
             </ul>

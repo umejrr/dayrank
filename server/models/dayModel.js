@@ -23,7 +23,7 @@ const daySchema = new Schema(
     score: {
       type: Number,
     },
-    bgColor: {
+    bgImage: {
       type: String,
     },
   },

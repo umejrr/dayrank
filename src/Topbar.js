@@ -2,8 +2,13 @@ import journalCloseIcon from "./imgs/journal-close.svg";
 import journalOpenIcon from "./imgs/journal-open.svg";
 import dayOpenIcon from "./imgs/day-open.svg";
 import dayCloseIcon from "./imgs/day-close.svg";
+import dayOpenAudio from "./sounds/day-open.mp3";
+import journalOpenAudio from "./sounds/journal-open.mp3";
 
 const Topbar = ({ journalOpen, setJournalOpen, dayOpen, setDayOpen }) => {
+  let dayAudio = new Audio(dayOpenAudio);
+  let journalAudio = new Audio(journalOpenAudio);
+
   return (
     <div className="topbar">
       <div className="topbar-heading-wrap">
@@ -11,12 +16,21 @@ const Topbar = ({ journalOpen, setJournalOpen, dayOpen, setDayOpen }) => {
       </div>
       <div className="topbar-btns-wrap">
         {journalOpen ? (
-          <a className="dialog-close" onClick={() => setJournalOpen(false)}>
+          <a
+            className="dialog-close"
+            onClick={() => {
+              setJournalOpen(false);
+              journalAudio.play();
+            }}
+          >
             {<img src={journalCloseIcon} alt="" />}
           </a>
         ) : (
           <a
-            onClick={() => setJournalOpen(true)}
+            onClick={() => {
+              setJournalOpen(true);
+              journalAudio.play();
+            }}
             href="#"
             className="checklist"
           >
@@ -24,11 +38,23 @@ const Topbar = ({ journalOpen, setJournalOpen, dayOpen, setDayOpen }) => {
           </a>
         )}
         {dayOpen ? (
-          <a className="dialog-close" onClick={() => setDayOpen(false)}>
+          <a
+            className="dialog-close"
+            onClick={() => {
+              setDayOpen(false);
+              dayAudio.play();
+            }}
+          >
             {<img src={dayCloseIcon} alt="" />}
           </a>
         ) : (
-          <a onClick={() => setDayOpen(true)} className="new-day">
+          <a
+            onClick={() => {
+              setDayOpen(true);
+              dayAudio.play();
+            }}
+            className="new-day"
+          >
             {<img src={dayOpenIcon} alt="" />}
           </a>
         )}

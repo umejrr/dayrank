@@ -258,6 +258,23 @@ nav {
 
 .card-table-wrap {
   width: 100%;
+  .head-wrap {
+    position: relative;
+    .eye-wrap {
+      position: absolute;
+      display: flex;
+      gap: 7vw;
+      z-index: 1;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      .eye {
+        width: 14vw;
+        height: 14vw;
+      }
+    }
+  }
   .card-table-wrapper {
     width: 100%;
   }
@@ -279,6 +296,7 @@ nav {
   width: auto;
   height: auto;
   padding: 0;
+  list-style-type: none;
 
   display: grid;
   gap: clamp(10px, 2vw, 20px);
@@ -308,8 +326,13 @@ nav {
 
 .card {
   padding: 2rem;
-  background-color: white;
   color: black;
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  text-align: left;
+  font-size: 30px;
+  border-radius: 10px;
   p {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -450,6 +473,14 @@ dialog {
   .journal-content-wrap {
     position: relative;
     .journal-content-top {
+      .sun {
+        width: 95px;
+        height: 89px;
+      }
+      .moon {
+        width: 78px;
+        height: 73px;
+      }
       h4 {
         font-size: 64px;
         font-weight: 500;
@@ -552,8 +583,18 @@ dialog {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
   h1 {
     text-align: center;
+    font-size: 150px;
+  }
+  .how-it-work-img {
+    position: absolute;
+    left: 20px;
+    bottom: -20px;
+    right: auto;
+    width: 480px;
   }
   .btns-wrap-landing {
     display: flex;
@@ -676,5 +717,181 @@ dialog {
     top: 120px;
     font-size: 30px;
     margin: 0;
+  }
+}
+
+.about-section {
+  padding-top: 46px;
+  position: relative;
+  .final-img-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .final-img-left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .before-after-img {
+    width: 100%;
+    margin-bottom: 100px;
+  }
+  .journal-about-img {
+    max-width: 748px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .about-final-img {
+    width: 100%;
+    margin-top: 100px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 130px;
+  }
+  .about-intro-wrap {
+    display: flex;
+    gap: 100px;
+    justify-content: space-between;
+    &.journal {
+      padding-top: 250px;
+      flex-direction: column;
+      gap: 85px;
+      position: relative;
+      h2 {
+        text-align: center;
+      }
+      .journal-arrow {
+        position: absolute;
+        right: 270px;
+        bottom: -60px;
+      }
+      .about-intro-p-wrap {
+        gap: 45px;
+        margin-bottom: 100px;
+        p {
+          font-size: 45px;
+        }
+      }
+    }
+    &.right {
+      flex-direction: column;
+      gap: 116px;
+      h2 {
+        text-align: right;
+      }
+      .about-intro-p-wrap {
+        text-align: left;
+        gap: 25px;
+        p {
+          font-size: 45px;
+        }
+      }
+    }
+    h2 {
+      font-size: 80px;
+    }
+    .about-intro-p-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 140px;
+      &.bottom {
+        p {
+          font-size: 45px;
+        }
+      }
+      p {
+        font-size: 30px;
+        margin: 0;
+      }
+    }
+  }
+  .add-day-img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 135px;
+  }
+  .tier-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 350px);
+    gap: 100px;
+    justify-content: space-between;
+    .tier-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      align-items: center;
+      text-align: center;
+      h3 {
+        font-size: 80px;
+        font-weight: 500;
+        margin: 0;
+      }
+      p {
+        font-size: 30px;
+        margin: 0;
+      }
+    }
+  }
+  .why-this-works-wrap {
+    padding-top: 180px;
+    h2 {
+      font-size: 80px;
+      text-align: left;
+      margin-bottom: 50px;
+    }
+    .why-this-text {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 50px;
+      &.right {
+        p {
+          text-align: right;
+        }
+      }
+      &.left {
+        p {
+          text-align: left;
+        }
+      }
+      p {
+        font-size: 40px;
+        margin: 0;
+        text-align: center;
+      }
+    }
+  }
+  .about-final-wrap {
+    padding-top: 150px;
+    h2 {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+    .about-final-text {
+      p {
+        text-align: center;
+        font-size: 45px;
+        margin: 0;
+      }
+      margin-bottom: 80px;
+      &.bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
+    }
+  }
+  .final-btn-wrap {
+    width: 100%;
+    display: flex;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
   }
 }

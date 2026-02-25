@@ -32,7 +32,6 @@ const JournalModal = ({ journalOpen }) => {
     isMorning ? (time = "morning") : (time = "night");
 
     const newTodo = {
-      id: Date.now(),
       text: inputText,
       isComplete: false,
       tier,
@@ -63,8 +62,8 @@ const JournalModal = ({ journalOpen }) => {
     clearInput("");
   };
 
-  const deleteTodo = async (id) => {
-    await fetch(`/api/todos/${id}`, {
+  const deleteTodo = async (_id) => {
+    await fetch(`/api/todos/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -85,11 +84,11 @@ const JournalModal = ({ journalOpen }) => {
     }
   };
 
-  const toggleTodo = async (id) => {
-    const todo = todoList.find((t) => t.id === id);
+  const toggleTodo = async (_id) => {
+    const todo = todoList.find((t) => t._id === _id);
     let nextComplete = !todo.isComplete;
 
-    await fetch(`/api/todos/${id}`, {
+    await fetch(`/api/todos/${_id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -134,13 +133,14 @@ const JournalModal = ({ journalOpen }) => {
   return (
     <dialog open={journalOpen}>
       <div className="dialog-wrap">
-        <h2>Add new JOURNAL</h2>
-        <div class="journal-wrap">
+        <h2>Add new TASK</h2>
+        <div className="journal-wrap">
           <img className="journal-bg" src={journalBg} />
           <div className="journal-content-wrap">
-            <div class="journal-content-top">
+            <div className="journal-content-top">
               <a href="#">
                 <img
+                  className="sun"
                   onClick={() => setIsMorning(true)}
                   src={isMorning ? sunActive : sunInactive}
                   alt=""
@@ -148,16 +148,16 @@ const JournalModal = ({ journalOpen }) => {
               </a>
               {isMorning ? <h4>Morning</h4> : <h4>Night</h4>}
 
-              <a href="#" onClick={() => setIsMorning(false)}>
+              <a href="#" className="moon" onClick={() => setIsMorning(false)}>
                 <img src={!isMorning ? moonActive : moonInactive} alt="" />
               </a>
-              <div class="medium-line"></div>
+              <div className="medium-line"></div>
             </div>
 
-            <div class="journal-content-bottom">
-              <div class="journal-tier">
+            <div className="journal-content-bottom">
+              <div className="journal-tier">
                 <h5>Gold</h5>
-                <div class="journal-tier-add-wrap">
+                <div className="journal-tier-add-wrap">
                   <input
                     ref={inputRef}
                     type="text"
@@ -182,8 +182,8 @@ const JournalModal = ({ journalOpen }) => {
                     .map((item) => {
                       return (
                         <Todo
-                          key={item.id}
-                          id={item.id}
+                          key={item._id}
+                          id={item._id}
                           text={item.text}
                           isComplete={item.isComplete}
                           isDelete={deleteTodo}
@@ -194,9 +194,9 @@ const JournalModal = ({ journalOpen }) => {
                 </div>
               </div>
 
-              <div class="journal-tier">
+              <div className="journal-tier">
                 <h5>Silver</h5>
-                <div class="journal-tier-add-wrap">
+                <div className="journal-tier-add-wrap">
                   <input
                     ref={inputRef}
                     type="text"
@@ -221,8 +221,8 @@ const JournalModal = ({ journalOpen }) => {
                     .map((item) => {
                       return (
                         <Todo
-                          key={item.id}
-                          id={item.id}
+                          key={item._id}
+                          id={item._id}
                           text={item.text}
                           isComplete={item.isComplete}
                           isDelete={deleteTodo}
@@ -233,9 +233,9 @@ const JournalModal = ({ journalOpen }) => {
                 </div>
               </div>
 
-              <div class="journal-tier">
+              <div className="journal-tier">
                 <h5>Bronze</h5>
-                <div class="journal-tier-add-wrap">
+                <div className="journal-tier-add-wrap">
                   <input
                     ref={inputRef}
                     type="text"
@@ -260,8 +260,8 @@ const JournalModal = ({ journalOpen }) => {
                     .map((item) => {
                       return (
                         <Todo
-                          key={item.id}
-                          id={item.id}
+                          key={item._id}
+                          id={item._id}
                           text={item.text}
                           isComplete={item.isComplete}
                           isDelete={deleteTodo}

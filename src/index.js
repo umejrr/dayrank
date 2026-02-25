@@ -9,11 +9,11 @@ import Login from "./Login";
 import Signup from "./Signup";
 import { AuthContext, AuthProvider } from "./AuthContext";
 import { useAuthContext } from "./hooks/useAuthContext";
+import About from "./About";
 
 function AppRoutes() {
   const { state, auth } = useAuthContext();
   const user = state?.user;
-  console.log("user:", user, "authReady:", auth);
 
   return (
     <Routes>
@@ -30,6 +30,7 @@ function AppRoutes() {
         path="/dashboard"
         element={user ? <App /> : <Navigate to="/login" />}
       />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 }

@@ -55,13 +55,13 @@ const Signup = () => {
   }
 
   return (
-    <div class="section-auth">
-      <div class="padding-global">
-        <div class="container">
-          <div class="auth-form-wrap">
+    <div className="section-auth">
+      <div className="padding-global">
+        <div className="container">
+          <div className="auth-form-wrap">
             <h1>Sign up</h1>
             <form className="auth-form" action="" onSubmit={handleSignup}>
-              <div class="input-wrap">
+              <div className="input-wrap">
                 <input
                   id="signup-username"
                   value={user.username}
@@ -75,7 +75,7 @@ const Signup = () => {
                   <p className="auth-error">{errors.username}</p>
                 )}
               </div>
-              <div class="input-wrap">
+              <div className="input-wrap">
                 <input
                   id="signup-email"
                   value={user.email}
@@ -85,7 +85,7 @@ const Signup = () => {
                 />
                 {errors.email && <p className="auth-error">{errors.email}</p>}
               </div>
-              <div class="input-wrap">
+              <div className="input-wrap">
                 <input
                   id="signup-pw"
                   value={user.password}

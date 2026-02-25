@@ -1,16 +1,20 @@
 import { Link, Links } from "react-router";
+import howDoIuseDis from "./imgs/howdoiusedis.svg";
 
 const Landing = () => {
   return (
-    <div class="section-landing">
-      <div class="padding-global">
-        <div class="container">
+    <div className="section-landing">
+      <a href="/about" class="how-it-works-link">
+        <img className="how-it-work-img" src={howDoIuseDis} alt="" />
+      </a>
+      <div className="padding-global">
+        <div className="container">
           <h1>WELCOME TO DAYRANK</h1>
-          <div class="btns-wrap-landing">
+          <div className="btns-wrap-landing">
             <Link to={"/login"} class="btn btn-primary">
               log in
             </Link>
-            <Link to={"/signup"} class="btn btn-primary">
+            <Link to={"/signup"} className="btn btn-primary">
               sign up
             </Link>
           </div>
